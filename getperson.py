@@ -12,8 +12,8 @@ c=conn.cursor()
 #             pwd text,
 #             img text
 # )""")
-c.execute("SELECT * FROM users;")
-print(c.fetchall())
+# c.execute("SELECT * FROM users;")
+# print(c.fetchall())
 
 response = requests.get("https://randomuser.me/api/")
 if response.status_code==200:
@@ -23,7 +23,10 @@ if response.status_code==200:
     password=dct['login']['password']
     email=dct['email']
     img_url=dct['picture']['large']
-    #c.execute("""INSERT INTO users VALUES(NULL,:a,:b,:c,:d);""",(email,username,password,img_url))
+    try:
+        c.execute("""INSERT INTO users VALUES(NULL,:a,:b,:c,:d);""",(email,username,password,img_url))
+    except:
+        pass
     conn.commit()
 else:
     print("Error: Status Code - {}".format(response.status_code))

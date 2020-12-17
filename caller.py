@@ -1,6 +1,7 @@
 import time
 import getperson
+import getfromct
 
-for i in range(10):
+for i in range(50):
     exec(open('getperson.py').read())
-    time.sleep(3)
+    exec(open('getfromct.py').read())
