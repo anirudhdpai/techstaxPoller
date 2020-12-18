@@ -1,32 +1,19 @@
 import requests
 import json
 import sqlite3
+import asyncio
+import aiohttp
 
-conn=sqlite3.connect("person.db")
-c=conn.cursor()
-
-# c.execute("""CREATE TABLE users(
-#             id integer primary key,
-#             email text,
-#             usrn text,
-#             pwd text,
-#             img text
-# )""")
-# c.execute("SELECT * FROM users;")
-# print(c.fetchall())
-
-response = requests.get("https://randomuser.me/api/")
-if response.status_code==200:
-    dct=response.json()['results'][0]
-    #print(dct)
-    username=dct['login']['username']
-    password=dct['login']['password']
-    email=dct['email']
-    img_url=dct['picture']['large']
-    try:
-        c.execute("""INSERT INTO users VALUES(NULL,:a,:b,:c,:d);""",(email,username,password,img_url))
-    except:
-        pass
-    conn.commit()
-else:
-    print("Error: Status Code - {}".format(response.status_code))
+def prrequest():
+    person=[]
+    response = requests.get("https://randomuser.me/api/")
+    if response.status_code==200:
+        dct=response.json()['results'][0]
+        #print(dct)
+        person.append(dct['login']['username'])
+        person.append(dct['login']['password'])
+        person.append(dct['email'])
+        person.append(dct['picture']['large'])
+    else:
+        person.append(response.status_code)
+    return person
